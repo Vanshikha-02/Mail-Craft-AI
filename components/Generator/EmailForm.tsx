@@ -6,6 +6,11 @@ import PromptExamples from "./PromptExamples";
 import Loading from "./Loading";
 import OutputCard from "./OutputCard";
 
+interface EmailResponse {
+  subject: string;
+  body: string;
+}
+
 export default function EmailForm() {
   const [purpose, setPurpose] = useState("");
   const [recipient, setRecipient] = useState("");
@@ -14,41 +19,59 @@ export default function EmailForm() {
 
   const [loading, setLoading] = useState(false);
 
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<EmailResponse | null>(null);
 
   async function generateEmail() {
-    setLoading(true);
+    if (!purpose.trim()) {
+      alert("Please enter the purpose of the email.");
+      return;
+    }
 
+    setLoading(true);
     setResult(null);
 
-    const res = await fetch("/api/generate", {
-      method: "POST",
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          purpose,
+          recipient,
+          tone,
+          additionalInfo,
+        }),
+      });
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+      if (!res.ok) {
+        throw new Error("Failed to generate email");
+      }
 
-      body: JSON.stringify({
-        purpose,
-        recipient,
-        tone,
-        additionalInfo,
-      }),
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      setResult({
+        subject: data.subject,
+        body: data.body,
+      });
+    } catch (error) {
+      console.error(error);
 
-    setResult(data);
-
-    setLoading(false);
+      setResult({
+        subject: "Error",
+        body: "Unable to generate email.",
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="space-y-8">
-
       <PromptExamples setPurpose={setPurpose} />
 
       <input
+        type="text"
         value={purpose}
         onChange={(e) => setPurpose(e.target.value)}
         placeholder="Purpose"
@@ -56,6 +79,7 @@ export default function EmailForm() {
       />
 
       <input
+        type="text"
         value={recipient}
         onChange={(e) => setRecipient(e.target.value)}
         placeholder="Recipient"
@@ -77,9 +101,10 @@ export default function EmailForm() {
 
       <button
         onClick={generateEmail}
-        className="w-full rounded-xl bg-blue-600 text-white py-4 font-semibold hover:bg-blue-700 transition"
+        disabled={loading}
+        className="w-full rounded-xl bg-blue-600 py-4 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
       >
-        Generate Email
+        {loading ? "Generating..." : "Generate Email"}
       </button>
 
       {loading && <Loading />}
@@ -90,7 +115,6 @@ export default function EmailForm() {
           body={result.body}
         />
       )}
-
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import EmailGenerator from "@/components/EmailGenerator";
+import EmailForm from "@/components/Generator/EmailForm";
 
 export default function GeneratePage() {
   return (
@@ -16,9 +16,10 @@ export default function GeneratePage() {
             <p className="mt-4 text-lg text-muted-foreground">
               Create professional emails in seconds.
             </p>
+
           </div>
 
-          <EmailGenerator />
+          <EmailForm />
         </div>
       </section>
     </main>
