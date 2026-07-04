@@ -12,9 +12,8 @@
 
 ## 🚀 Live Demo
 
-🔗 **Live Website:** [https://your-vercel-url.vercel.app](https://mail-craft-imd3-zeta.vercel.app/
-)<img width="707" height="36" alt="image" src="https://github.com/user-attachments/assets/5a9cbaac-6cef-4d4e-967c-4520080cd3dd" />
-
+🔗 **Live Website:** [https://your-vercel-url.vercel.app]
+https://mail-craft-imd3-zeta.vercel.app/
 ---
 
 ## 📸 Screenshots
