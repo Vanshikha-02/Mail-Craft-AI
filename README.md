@@ -12,8 +12,8 @@
 
 ## 🚀 Live Demo
 
-🔗 **Live Website:** [https://your-vercel-url.vercel.app]
-https://mail-craft-imd3-zeta.vercel.app/
+🔗 **Live Website:** 
+https://mail-craft-ai-iota.vercel.app/
 ---
 
 ## 📸 Screenshots
